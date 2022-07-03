@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mlflow-deployment
+  labels:
+    app: mlflow
+spec:
+  selector:
+    matchLabels:
+      app: mlflow
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mlflow
+    spec:
+      containers:
+        - name: mlflow
+          image: rjtshrm/mlflow:latest
+          args: ["--backend-store-uri", "postgresql://psql:Rjtshrm94_@mlflopgsql.postgres.database.azure.com:5432/postgres?sslmode=require", "--default-artifact-root", "wasbs://mlflow-test@mlflowsmodeltorage.blob.core.windows.net", "--host", "0.0.0.0"]
+          ports:
+            - containerPort: 5000
+
